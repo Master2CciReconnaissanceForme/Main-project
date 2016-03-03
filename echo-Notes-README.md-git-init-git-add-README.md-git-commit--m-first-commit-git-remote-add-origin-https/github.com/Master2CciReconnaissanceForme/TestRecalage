@@ -1,0 +1,48 @@
+package projetIndustriel;
+
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfKeyPoint;
+import org.opencv.features2d.DescriptorExtractor;
+import org.opencv.features2d.FeatureDetector;
+import org.opencv.highgui.Highgui;
+
+public class RecalageTest {
+
+	// METHODES
+
+	// MAIN
+	public static void main(final String[] args) {
+		// Load the native library.
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+		// Lire image directement en niveau de gris
+		Mat matTh = Highgui.imread("E:\\Travail\\Isa\\MASTER CCI\\PROJET_STAGE\\Images\\img_thermal_1456679599692.jpg",
+				Highgui.CV_LOAD_IMAGE_GRAYSCALE);
+		Mat matOp = Highgui.imread("E:\\Travail\\Isa\\MASTER CCI\\PROJET_STAGE\\Images\\IMG_20160228_181322.jpg",
+				Highgui.CV_LOAD_IMAGE_GRAYSCALE);
+
+		// Utilisation de la classe FeatureDetector qui détecte les points
+		// caractéristiques
+		FeatureDetector fd = FeatureDetector.create(FeatureDetector.SURF);
+		MatOfKeyPoint mkpTh = new MatOfKeyPoint();
+		MatOfKeyPoint mkpOp = new MatOfKeyPoint();
+
+		fd.detect(matTh, mkpTh);
+		fd.detect(matOp, mkpOp);
+
+		DescriptorExtractor de = DescriptorExtractor.create(DescriptorExtractor.SURF);
+		Mat descriptorTh = new Mat();
+		Mat descriptorOp = new Mat();
+		de.compute(matTh, mkpTh, descriptorTh);
+		de.compute(matOp, mkpOp, descriptorOp);
+
+		// Ecriture des images
+		// Highgui.imwrite("E:\\Travail\\Isa\\MASTER
+		// CCI\\PROJET_STAGE\\Images\\Thermique_test.jpg", descriptorTh);
+		// Highgui.imwrite("E:\\Travail\\Isa\\MASTER
+		// CCI\\PROJET_STAGE\\Images\\Optique_test.jpg", descriptorOp);
+
+	}
+
+}
